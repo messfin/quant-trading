@@ -21,8 +21,8 @@ st.set_page_config(page_title="ZMTech Lab v2", page_icon="🧬", layout="wide")
 st.markdown(get_base_css(), unsafe_allow_html=True)
 
 # --- Initialize AI Layer ---
-GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
-ai_layer = AIReportingLayer(GOOGLE_API_KEY)
+if 'ai_layer' not in st.session_state:
+    st.session_state['ai_layer'] = AIReportingLayer(st.secrets.get("GOOGLE_API_KEY"))
 
 # --- Helpers ---
 @st.cache_data(ttl=3600)
@@ -42,8 +42,19 @@ def load_data(ticker, start, end):
 def main():
     st.sidebar.title("🧬 ZMTech Quant Portal")
     
-    if GOOGLE_API_KEY:
-        st.sidebar.success("✅ AI connected: Gemini 2.x")
+    # AI Key Management
+    with st.sidebar.expander("🛠️ Advanced AI Settings"):
+        custom_key = st.text_input("Override Gemini API Key", type="password", help="Enter your own key from AI Studio to bypass global quota.")
+        if custom_key:
+            if 'last_custom_key' not in st.session_state or st.session_state['last_custom_key'] != custom_key:
+                st.session_state['ai_layer'] = AIReportingLayer(custom_key)
+                st.session_state['last_custom_key'] = custom_key
+                st.success("New key applied!")
+
+    current_ai = st.session_state['ai_layer']
+    if current_ai.api_key:
+        status_text = "✅ AI Ready (Custom Key)" if 'last_custom_key' in st.session_state else "✅ AI Ready (System Key)"
+        st.sidebar.success(status_text)
     else:
         st.sidebar.warning("⚠️ Gemini API Key Missing")
 
@@ -183,13 +194,13 @@ def render_pairs_lab():
                     pair_ticker = f"{res['t1']} vs {res['t2']}"
                     # Provide recent spreads/signals summary
                     recent_signals = res['signals'].loc[res['signals']['signals1'] != 0].tail(10).to_string()
-                    analysis = ai_layer.generate_analysis("Pair Trading", pair_ticker, res['stats'], recent_signals)
+                    analysis = st.session_state['ai_layer'].generate_analysis("Pair Trading", pair_ticker, res['stats'], recent_signals)
                     st.session_state['pair_ai_analysis'] = analysis
             
             if 'pair_ai_analysis' in st.session_state:
                 st.markdown(st.session_state['pair_ai_analysis'])
                 
-                pdf_data = ai_layer.create_pdf_report("Pair Trading", f"{res['t1']}_{res['t2']}", res['stats'], st.session_state['pair_ai_analysis'])
+                pdf_data = st.session_state['ai_layer'].create_pdf_report("Pair Trading", f"{res['t1']}_{res['t2']}", res['stats'], st.session_state['pair_ai_analysis'])
                 if pdf_data:
                     b64 = base64.b64encode(pdf_data).decode('utf-8')
                     display = f'<iframe src="data:application/pdf;base64,{b64}" width="100%" height="800"></iframe>'
@@ -454,13 +465,13 @@ def display_results(signals_df, portfolio_df, stats, ticker, strategy_name, capi
         if st.button("🧠 GENERATE FULL REPORT"):
             with st.spinner("Gemini is crunching numbers..."):
                 recent = signals_df.loc[signals_df['signals'] != 0].tail(10).to_string()
-                analysis = ai_layer.generate_analysis(strategy_name, ticker, stats, recent)
+                analysis = st.session_state['ai_layer'].generate_analysis(strategy_name, ticker, stats, recent)
                 st.session_state['ai_analysis'] = analysis
         
         if 'ai_analysis' in st.session_state:
             st.markdown(st.session_state['ai_analysis'])
             
-            pdf_data = ai_layer.create_pdf_report(strategy_name, ticker, stats, st.session_state['ai_analysis'])
+            pdf_data = st.session_state['ai_layer'].create_pdf_report(strategy_name, ticker, stats, st.session_state['ai_analysis'])
             if pdf_data:
                 b64 = base64.b64encode(pdf_data).decode('utf-8')
                 display = f'<iframe src="data:application/pdf;base64,{b64}" width="100%" height="800"></iframe>'
