@@ -40,7 +40,7 @@ class AwesomeOscillator(StrategyBase):
     def __init__(self):
         super().__init__("Awesome Oscillator vs MACD")
         
-    def generate_signals(self, df, ma1=5, ma2=34):
+    def generate_signals(self, df, ma1=5, ma2=34, **kwargs):
         signals = df.copy()
         
         # MACD part
@@ -97,7 +97,7 @@ class MACDOscillator(StrategyBase):
     def __init__(self):
         super().__init__("MACD Oscillator")
         
-    def generate_signals(self, df, ma1=12, ma2=26):
+    def generate_signals(self, df, ma1=12, ma2=26, **kwargs):
         signals = df.copy()
         signals['ma1'] = signals['Close'].rolling(window=ma1).mean()
         signals['ma2'] = signals['Close'].rolling(window=ma2).mean()
@@ -113,7 +113,7 @@ class HeikinAshiStrategy(StrategyBase):
     def __init__(self):
         super().__init__("Heikin-Ashi")
         
-    def generate_signals(self, df, stls=3):
+    def generate_signals(self, df, stls=3, **kwargs):
         data = df.copy()
         # Heikin Ashi transformation
         data['HA close'] = (data['Open'] + data['High'] + data['Low'] + data['Close']) / 4
@@ -160,7 +160,7 @@ class BollingerBandsPattern(StrategyBase):
     def __init__(self):
         super().__init__("Bollinger Bands Pattern")
         
-    def generate_signals(self, df, window=20, alpha=0.0001, beta=0.0001):
+    def generate_signals(self, df, window=20, alpha=0.0001, beta=0.0001, **kwargs):
         data = df.copy()
         data['std'] = data['Close'].rolling(window=window).std()
         data['mid band'] = data['Close'].rolling(window=window).mean()
@@ -213,7 +213,7 @@ class RSIPattern(StrategyBase):
     def __init__(self):
         super().__init__("RSI Overbought/Oversold")
         
-    def generate_signals(self, df, n=14):
+    def generate_signals(self, df, n=14, **kwargs):
         data = df.copy()
         delta = data['Close'].diff().dropna()
         up = delta.clip(lower=0)
@@ -244,7 +244,7 @@ class ShootingStar(StrategyBase):
     def __init__(self):
         super().__init__("Shooting Star")
         
-    def generate_signals(self, df):
+    def generate_signals(self, df, **kwargs):
         data = df.copy()
         # open>close, red color
         cond1 = (data['Open'] >= data['Close'])
@@ -325,7 +325,7 @@ class ParabolicSAR(StrategyBase):
     def __init__(self):
         super().__init__("Parabolic SAR")
         
-    def generate_signals(self, df, initial_af=0.02, step_af=0.02, end_af=0.2):
+    def generate_signals(self, df, initial_af=0.02, step_af=0.02, end_af=0.2, **kwargs):
         new = df.copy().reset_index()
         new['trend'] = 0
         new['sar'] = 0.0
@@ -386,7 +386,7 @@ class LondonBreakout(StrategyBase):
     def __init__(self):
         super().__init__("London Breakout")
         
-    def generate_signals(self, df):
+    def generate_signals(self, df, **kwargs):
         # Since this is daily data, we implement a Daily Open Range Breakout (ORB)
         data = df.copy()
         data['range'] = (data['High'] - data['Low']).shift(1)
@@ -401,10 +401,8 @@ class DualThrust(StrategyBase):
     def __init__(self):
         super().__init__("Dual Thrust")
         
-    def generate_signals(self, df):
+    def generate_signals(self, df, rg=5, k=0.5, **kwargs):
         data = df.copy()
-        rg = 5 # default range
-        k = 0.5 # default param
         
         # Calculate range components
         data['hh'] = data['High'].rolling(rg).max()

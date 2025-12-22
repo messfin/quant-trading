@@ -296,7 +296,7 @@ dataset.reset_index(inplace=True)
 
 #import the strategy script as this is a script for analytics and visualization
 #the official trading strategy script is in the following link
-# https://github.com/je-suis-tm/quant-trading/blob/master/Oil%20Money%20project/Oil%20Money%20Trading%20backtest.py
+# https://github.com/messfin/quant-trading/blob/master/Oil%20Money%20project/Oil%20Money%20Trading%20backtest.py
 import oil_money_trading_backtest as om
 
 #generate signals,monitor portfolio performance

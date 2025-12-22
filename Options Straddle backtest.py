@@ -15,7 +15,7 @@
 #the dataset has 3 spreadsheets, the spot spreadsheet refers to spot price of stoxx 50
 #aug spreadsheet refers to options settle at august 2019
 #jul spreadsheet refers to options settle at july 2019
-# https://github.com/je-suis-tm/quant-trading/tree/master/data
+# https://github.com/messfin/quant-trading/tree/master/data
 
 #if you dont know what options straddle is
 #i recommend u to read a tutorial from fidelity
@@ -172,7 +172,7 @@ def plot(df,strikeprice,contractsize):
     x=list(np.arange(int(begin),int(end)))
     
     #as u can see from the pic
-    # https://github.com/je-suis-tm/quant-trading/blob/master/preview/options%20straddle%20payoff%20diagram.png
+    # https://github.com/messfin/quant-trading/blob/master/preview/options%20straddle%20payoff%20diagram.png
     #we only make money (green color) if the spot price is outside of a range
     #group1 and group2 are variables that indicate which range our line plot gets red/green color
     #they keep track of the indices that we switch from profit to loss or from loss to profit

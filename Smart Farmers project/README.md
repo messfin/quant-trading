@@ -4,19 +4,19 @@
 -----------------------------------------
 ### Table of Contents
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#intro>Intro</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#intro>Intro</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#assumption>Assumption</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#assumption>Assumption</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#theoretical-framework>Theoretical Framework</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#theoretical-framework>Theoretical Framework</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#data-specification>Data Specification</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#data-specification>Data Specification</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#empirical-result>Empirical Result</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#empirical-result>Empirical Result</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#discussion>Discussion</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#discussion>Discussion</a>
 
-* <a href=https://github.com/je-suis-tm/quant-trading/tree/master/Smart%20Farmers%20project#further-reading>Further Reading</a>
+* <a href=https://github.com/messfin/quant-trading/tree/master/Smart%20Farmers%20project#further-reading>Further Reading</a>
 ------------------------------------------------
 &nbsp;
 
@@ -61,11 +61,11 @@ Maximize total profit regarding supply and demand for each type of crop
 
 **Workflow**
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/workflow.png)
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/workflow.png)
 
 &nbsp;
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/naive%20model.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/naive%20model.PNG) 
 
 As we have mentioned in the assumptions, the objective of the farmers is straight forward, profit maximization. The profit equals to unit revenue minus unit cost then times the quantity. Inevitably farmers would love to increase as much output as possible since they gain no control over the unit cost. There is only one small faux pas, too much supply can damage the crop price which ultimately leads to the decrease of the total revenue. Hence, farmers have to strike a delicate balance to plant each type of crop. When facing oversupply of one type of crop, farmers need to decide whether the greater market share can compensate the loss from the crop price, or it is wise to switch to another type of crop. Translated to mathematics, the entire decision on choice of crops becomes the pricing mechanism of each type of crop. We will expand on the topic of pricing later. For the moment, let’s just quickly scan over the main equation. The objective function can be broken down into four parts. The first one is the declaration of maximization. Next, Σ denotes a sum over each type of crop. The first term after Σ is price (everything inside the parenthesis) times production of crop i. The second term after Σ is cost times production of crop i. 
 
@@ -89,23 +89,23 @@ Hence, we derive the equality constraint, the total available land area for plan
 
 After we set things straight at the objective function and the constraints, we can move onto the core part of the model, the pricing mechanism. Let’s borrow the concept of market equilibrium from microeconomics. Alfred Marshall introduced the idea of supply demand model into economics. Where supply curve with negative slope and demand curve with positive slope intercepts denotes the equilibrium price.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/pricing%20mechanism.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/pricing%20mechanism.PNG) 
 
 By using linear approximation, we obtain the equation above. Price of crop i equals to the equilibrium price plus the mismatch between supply and demand. When supply exceeds demand, the market condition is oversupply. The difference between demand and supply is undisputedly negative. After multiplied by pricing coefficient α, the difference converts from several hundred tonnes to the scale of US dollar per tonne. The equation easily generates a downward pressure on the equilibrium price, and vice versa. With some random disturbance ε (force majeure), the linear regression emerges.
 
 Now that we obtain the pricing mechanism, we shove it back into the original objective function. Because the income per crop is estimated via last available price, the expected unit revenue equals to the latest price plus the change of the price caused by supply fluctuation through the pricing mechanism. The price change can be easily derived via the first order difference of price at time t and t-1. We already know the number of this year’s supply but want to get the answer of next year’s, so we use next year’s supply minus this year’s supply instead of the abbreviation of ∆Q. What is ∆D though?
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/price%20change%20derivation.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/price%20change%20derivation.PNG) 
 
 Let’s solve the final piece of the puzzle. Prior to our assumptions of demand, demand is driven by the population and the disposable income. Disposable income is slightly complicated to compute but we can easily find its substitute, GDP per capita. Intuitively we can create a regression model like the pricing mechanism. The only problem is we cannot directly observe the value of demand which bridges the gap between two regression models.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/demand%20model.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/demand%20model.PNG) 
 
 Fortunately, there is an econometric tool called <a href=https://en.wikipedia.org/wiki/Instrumental_variables_estimation>instrumental variable</a>. By using 2-Stage Least Square, it creates the possibility of making causal inferences with observational data. A valid instrumental variable has a causal effect on unobserved variable but no confounding for the direct effect on the dependent variable. Both population and GDP per capita make brilliant instrumental variables. In layman’s terms, population and GDP per capita have no direct power over the crop price. They can only influence the crop price indirectly through the change of demand. Voila, the only unknown variable inside the framework is expected production of each type of crop.
 
 In order to get the optimal production of each type of crop, we steal something called <a href=https://optimization.mccormick.northwestern.edu/index.php/Quadratic_programming>quadratic programming</a> from the toolbox of <a href=https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf>convex optimization</a>. We have to transform the equations above into the matrix form below. While using `CVXOPT`, a couple of things are moderately modified. First, we will minimize the negative version of the objective function rather than maximize the objective function. Then, the inequality constraint must follow the form of not-larger-than. Many smaller-than inequalities are converted to the negative version of not-larger-than. At last, we ought to construct block matrix to satisfy the requirement of a single inequality constraint. 
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/naive%20model%20matrix.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/naive%20model%20matrix.PNG) 
 
 Splendid, all :raised_hands: on deck, it’s about time to move towards the next chapter!
 
@@ -125,79 +125,79 @@ How does the model perform against the reality? Let’s run a backtest. Unlike t
 
 The first target is cabbage. Honestly, I don’t recall eating cabbage in a Malay restaurant, probably in a Peranakan restaurant? The estimated price of cabbage looks like an <a href=https://www.uio.no/studier/emner/sv/oekonomi/ECON4150/v13/undervisningsmateriale/lect15v13.pdf>AR1 model</a>. The lime line seems to be a replication of the green line with one-year lag. I wouldn’t be surprised given that the estimated price equals to the last available price plus the pricing mechanism.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20price.png) 
 
 The same can be said to the production backtesting. The red line always lags the violet line by one year.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20production.png) 
 
 In the actual regression stage, the in-sample data is a nice fit. The purple line captures the overall trend but has a smaller volatility than the yellow line. There is a valid causal relationship between price and supply plus demand. Cabbage is apparently for domestic consumption. Seriously, besides Singapore, why would anyone import cabbage from Malaysia?
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cabbage%20regression.png) 
 
 The second one is cocoa. Who doesn’t like chocolates? Although Malaysian cocoa beans isn’t known for its top-notch quality, the cocoa tree occupies quite a large area of plantation area. I suspect it has something to do with the popular drink, <a href=https://en.wikipedia.org/wiki/Milo_dinosaur>Milo Dinosaur</a>. The price forecast shows similar traits as the cabbage, AR1 model.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20price.png) 
 
 Yet, the production backtest is a different case. It’s a flawless forecast on the production side. Since our model is centered around the expected production, it kind of makes sense.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20production.png) 
 
 The regression result sounds worrisome. The demand of cocoa beans does not appear to count on GDP per capita or population. I suppose, you buy iced Milo when you are broke and you buy one more spoon on top when you are rich?
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/cocoa%20regression.png) 
 
 The third one is coconut. Nobody loves coconut rice like Malays. Nothing tastes as delicious as coconut rice with pandan leaves. The estimated coconut price looks the part. The prediction successfully simulates the V-shaped recovery of coconut price.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20price.png) 
 
 But the production is severely overestimated. At first, the downhill production of coconut coincides with the collapse of the price. The production hasn’t kept up with the price rebound ever since.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20production.png) 
 
 For the regression, supply and demand do not have the explanatory power over the coconut price at the beginning. Gradually, the relationship starts to reveal itself. As Malaysia exports coconut oil for cosmetics products, the domestic demand isn’t sufficient for the model.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/coconut%20regression.png) 
 
 The fourth one is another tropical fruit, mango. You can put it in chicken curry or chendol, either way, so yummy. The price forecast is a disaster. The actual price moves completely opposite to the projection.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20price.png) 
 
 The estimated production follows the trend but with a larger magnitude of fluctuation. Especially in 2015, the model expects a price peak for some unknown reason.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20production.png) 
 
 Supply and demand work to certain extent – at least the overall trend is captured. People usually buy imported mango from Thailand. Domestic demand should be able to cover the model. There may be some other hidden factors influence mango demand.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/mango%20regression.png) 
 
 The fifth one is rubber. Rubber is a public traded commodity in SGX with RSS3 and TSR20. It used to play a giant role in Malaysia’s export business before the bonanza of oil palm. Many rubber end products are big industries in Malaysia, such as tyre and condom. The plunge of the rubber price prompts the farmers to switch crops. However, the price prediction works spectacularly well.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20price.png) 
 
 Despite the overestimation of rubber production, the model provides a clear picture of the underlying trend.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20production.png) 
 
 Supply and demand have limited explanatory power on rubber. Since rubber is an export business, the model must take in consideration of international demand. 
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/rubber%20regression.png) 
 
 At the first glance, the model works well on the overall production of all 30 crops. If you break down the actual volume of each crop, you will realize oil palm is actually the predominant driver. The total production is merely a reflection of oil palm. Oil palm fruit is the raw material for palm oil. Malaysia is the second largest palm oil producer trailing after Indonesia. The oil palm industry is a pillar of the Malaysian economy.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/overall%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/overall%20production.png) 
 
 The prediction of oil palm looks a bit weird. In some parts, it shows some features of AR1 model. In other parts, the model appears to be accurate. Oil palm is perhaps the most commercialized commodity among 30 crops in the model. It is rather difficult if not impossible to speculate the price movement of oil palm.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20price.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20price.png) 
 
 Though the price projection is gibberish, the model yields a convincing outcome on the production. Oil palm possibly has the smallest mean error compared to other crops.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20production.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20production.png) 
 
 Supply and demand explain the price in the earlier period. Throughout the recent years, the relationship begins to cool down. Palm oil is a lucrative export business in Malaysia. The external business environment should have a bigger influence than local population or GDP per capita.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20regression.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20regression.png) 
 
 ### Discussion
 
@@ -208,7 +208,7 @@ To be fair, the excellent result of backtesting occurs because we are using God'
 
 A comparison with futures market is the best way to test the forward-looking accuracy of the model. Bear in mind that not all crops are commoditized in the financial market. Here we select palm oil, for its immense liquidity, to make a forward testing. In Malaysia, there are two types of price associated with palm oil, Fresh Fruit Bunches (FFB) and Crude Palm Oil (CPO). The model per se gives out the raw material price which is oil palm fruit FFB price in US dollar per tonne. The historical benchmark we are using for comparison is Bursa Malaysia Ringgit denominated CPO futures generic first contract. The benchmark requires some computations of annual average and US dollar conversion before plotting. The contract size of the futures is 25 metric tonnes. As a consequence of unit mismatch and other fees involved in the oil extraction, we would visualize both prices in separate axis.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20vs%20palm%20oil.png) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/oil%20palm%20vs%20palm%20oil.png) 
 
 Oil palm FFB price forecast is based upon a few assumptions. The demand consists of UN population forecast and IMF GDP per capita forecast before COVID-19. We assume a 5% Year-on-Year increase in agricultural land. As for the crop yield, we are taking the historic average to eliminate the influence of weather. Palm oil CPO futures price is collected from Bloomberg on the 8th of July. As you can see, the forward testing isn’t as fantastic as the back testing. The model suggests a backwardation from 2018 to 2020 and a contango from 2021 onwards. Apparently, the actual forward curve is more like a W-shaped recovery thanks to fucking coronavirus. If we create a short position in 2018 and keep rolling over the contracts, not sure how many investors have pulled out their money from our hedge fund in 2020 :expressionless:
 
@@ -226,7 +226,7 @@ Although FAO provides a detailed list of crop price in each country, Ricardian m
 
 The naïve form is centered around the idea of Pareto Optimal. The generalized form also ensures Pareto Optimal equals to Nash Equilibrium. In another phrase, the illicit market behaviors such as competition and collusion do not take place among different countries. We have heard of the infamous <a href=https://en.wikipedia.org/wiki/2020_Russia%E2%80%93Saudi_Arabia_oil_price_war>oil price war</a> between Russia and Saudi Arabia. Their competition of the market share led to the plummeting oil price. Their collusion also led to the bankruptcy of many shale oil producers in Permian basin. In this zero-sum game, the slice may be larger for some players but the cake is definitely smaller. In our Ricardian model, the end game is to maximize the total profit sum of all countries. It’s a bigger cake for everyone although the slice for individual player is not guaranteed to be bigger.
 
-![alt text](https://github.com/je-suis-tm/quant-trading/blob/master/Smart%20Farmers%20project/preview/ricardian%20model.PNG) 
+![alt text](https://github.com/messfin/quant-trading/blob/master/Smart%20Farmers%20project/preview/ricardian%20model.PNG) 
 
 The generalized form looks like the cousin of the naïve form. There are only minor changes in the mathematics form. We have one more sum function Σ to capture each country with subscript j in the system. The list of countries should include importers and exporters for each type of crop to cover ideally 90% of the market activity. Well, given the data complexity of Ricardian model, it is likely to take a decade for me to collect everything and simulate the model. Since we have talked about the smart farmers, let’s be smart researchers for once. Amid the decent performance of the naïve form, why bother fixing it when it’s not broken? The bottom line is, as long as we collect good forecast of population, GDP per capita, arable land & crop yield, we are able to make one year ahead forecast for both crop production and price. In that way, we can adjust our futures contracts accordingly and switch from the front month to a further-out month.
 

@@ -1,13 +1,15 @@
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import plotly.express as px
+from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import base64
 import statsmodels.api as sm
-import os
 
 # Import local modules
 from strategies import STRATEGIES, PairTrading
@@ -156,7 +158,6 @@ def render_pairs_lab():
         tab1, tab2, tab3 = st.tabs(["💧 Equity Curve", "📋 Analysis & Data", "🤖 AI Research"])
 
         with tab1:
-            import plotly.graph_objects as go
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=res['portfolio'].index, y=res['portfolio']['total asset'],
@@ -227,7 +228,6 @@ def render_risk_lab():
 
         if 'mc_results' in st.session_state:
             res = st.session_state['mc_results']
-            import plotly.graph_objects as go
             fig = go.Figure()
             
             # Show a subset of simulations for performance if too many
@@ -269,9 +269,6 @@ def render_risk_lab():
             common_idx = vix_df.index.intersection(spy_df.index)
             vix_plot = vix_df.loc[common_idx]
             spy_plot = spy_df.loc[common_idx]
-
-            import plotly.graph_objects as go
-            from plotly.subplots import make_subplots
 
             fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -352,7 +349,6 @@ def render_macro_research_lab():
             else:
                 st.error("Correlation error: Not enough finite data points available.")
             
-            import plotly.graph_objects as go
             fig_macro = go.Figure()
             fig_macro.add_trace(go.Scatter(
                 x=df['wcs'], y=df['cad'], mode='markers',
@@ -374,9 +370,6 @@ def render_macro_research_lab():
 
 # --- Shared UI ---
 def display_results(signals_df, portfolio_df, stats, ticker, strategy_name, capital):
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
-
     st.subheader(f"Strategy: {strategy_name} on {ticker}")
     
     # Metrics

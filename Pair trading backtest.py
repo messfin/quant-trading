@@ -338,7 +338,7 @@ def main():
     portfolio_details=portfolio(signals[ind:])
     
     #the performance metrics of investment could be found in another strategy called Heikin-Ashi
-    # https://github.com/je-suis-tm/quant-trading/blob/master/heikin%20ashi%20backtest.py
+    # https://github.com/messfin/quant-trading/blob/master/heikin%20ashi%20backtest.py
 
 
 # In[8]:

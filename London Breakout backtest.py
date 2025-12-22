@@ -280,7 +280,7 @@ def main():
     plot(new)
 
 #how to calculate stats could be found from my other code called Heikin-Ashi
-# https://github.com/je-suis-tm/quant-trading/blob/master/heikin%20ashi%20backtest.py
+# https://github.com/messfin/quant-trading/blob/master/heikin%20ashi%20backtest.py
 
 if __name__ == '__main__':
     main()

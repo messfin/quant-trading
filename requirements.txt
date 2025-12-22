@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+yfinance
+matplotlib
+plotly
+statsmodels
+scipy
+fpdf2
+python-docx
+google-generativeai

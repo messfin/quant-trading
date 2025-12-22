@@ -96,7 +96,7 @@ def cost_curve(x,y1,y2=None,
 #if u dont know scraping, that will be a problem
 #data scientists cant wait for engineers to feed you data
 #maybe its time for you to learn
-# https://github.com/je-suis-tm/web-scraping
+# https://github.com/messfin/web-scraping
 
 #also you can use oil breakeven price to replace cost data
 #the following two links contain quite a lot of information
