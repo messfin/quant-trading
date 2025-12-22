@@ -17,10 +17,18 @@ class AIReportingLayer:
                 'gemini-2.5-flash', 
                 'gemini-2.0-flash', 
                 'gemini-2.0-flash-lite',
+                'gemini-3-flash-preview',
+                'gemini-2.5-flash-preview-09-2025',
+                'gemini-2.0-flash-001',
                 'gemini-1.5-flash', 
                 'gemini-1.5-flash-8b',
+                'gemini-1.5-flash-latest',
                 'gemini-2.5-pro',
+                'gemini-3-pro-preview',
+                'gemini-2.0-pro-exp',
                 'gemini-1.5-pro',
+                'gemini-1.5-pro-latest',
+                'gemini-1.5-pro-002',
                 'gemini-pro-latest'
             ]
             self.model = None
@@ -87,10 +95,10 @@ class AIReportingLayer:
                     if "404" in err_msg or "not found" in err_msg or "429" in err_msg or "quota" in err_msg:
                         continue
                     raise inner_e
-            return "⚠️ Quota Exceeded (429) across all available Gemini models. The Google Free Tier has strict 'Requests Per Minute' and 'Requests Per Day' limits. Please wait 60 seconds and try again, or check your Google AI Studio usage."
+            return "⚠️ Quota Exceeded (429) across 16 different Gemini models (including Flash 3.0 & 2.5). This happens when Google's Free Tier daily cap is reached or if the Streamlit Cloud IP is being throttled. Please try again in 2-5 minutes."
         except Exception as e:
             if "quota" in str(e).lower() or "429" in str(e):
-                return "🛑 Gemini AI Quota Exceeded. Free Tier resets every 60 seconds (RPM) and has a daily cap (RPD). Please try again in 1 minute."
+                return "🛑 Gemini AI Quota Exceeded. You have likely reached your daily free limit (RPD) or the 1500 RPM burst limit. Please check your usage at https://aistudio.google.com/."
             return f"Error generating AI analysis: {str(e)}"
 
     def extract_sentiment(self, ai_text):
