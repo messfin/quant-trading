@@ -32,7 +32,10 @@ class AIReportingLayer:
                 'gemini-1.5-pro-latest',
                 'gemini-1.5-pro-002',
                 'gemini-exp-1206',
-                'gemini-pro-latest'
+                'gemini-pro-latest',
+                'gemma-3-27b-it',
+                'gemma-3-12b-it',
+                'gemma-3-4b-it'
             ]
             self.model = None
             for name in self.model_names:
@@ -94,14 +97,19 @@ class AIReportingLayer:
                     return response.text
                 except Exception as inner_e:
                     err_msg = str(inner_e).lower()
-                    # Fallback for 404 (not found) or 429 (quota/rate limit)
-                    if "404" in err_msg or "not found" in err_msg or "429" in err_msg or "quota" in err_msg:
+                    
+                    # If it's a 429 (Quota Exceeded), STOP. 
+                    # Looping through 18 models on a 429 just burns your Daily RPD limit 18x faster.
+                    if "429" in err_msg or "quota" in err_msg:
+                        return f"🛑 Gemini Quota Exceeded (429). The Google Free Tier has reached its limit. Model tried: {name}. Please wait 60 seconds or check https://aistudio.google.com/."
+                        
+                    # Only fallback for 404 (not found)
+                    if "404" in err_msg or "not found" in err_msg:
                         continue
+                        
                     raise inner_e
-            return "⚠️ Quota Exceeded (429) across 16 different Gemini models (including Flash 3.0 & 2.5). This happens when Google's Free Tier daily cap is reached or if the Streamlit Cloud IP is being throttled. Please try again in 2-5 minutes."
+            return "⚠️ All available Gemini models are currently offline or unsupported by your API key."
         except Exception as e:
-            if "quota" in str(e).lower() or "429" in str(e):
-                return "🛑 Gemini AI Quota Exceeded. You have likely reached your daily free limit (RPD) or the 1500 RPM burst limit. Please check your usage at https://aistudio.google.com/."
             return f"Error generating AI analysis: {str(e)}"
 
     def extract_sentiment(self, ai_text):
